@@ -172,16 +172,24 @@
         imageInput.files = files;
         renderPreviews(files);
       });
-      dropZone.addEventListener("click", function () {
-        imageInput.click();
-      });
+      // Note: no manual click-to-open handler here — the <label for="..."> element
+      // already opens the file picker natively; adding imageInput.click() on top of
+      // that would fire the dialog twice.
     }
   }
 
-  /* ---------------- Remove-existing-image buttons (admin edit form) ---------------- */
-  document.querySelectorAll("[data-confirm]").forEach(function (form) {
+  /* ---------------- Confirm-before-submit: works on <form data-confirm> and on
+     standalone <button data-confirm> (e.g. multi-action buttons using formaction) ---------------- */
+  document.querySelectorAll("form[data-confirm]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
       if (!window.confirm(form.getAttribute("data-confirm"))) {
+        e.preventDefault();
+      }
+    });
+  });
+  document.querySelectorAll("button[data-confirm]").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      if (!window.confirm(btn.getAttribute("data-confirm"))) {
         e.preventDefault();
       }
     });

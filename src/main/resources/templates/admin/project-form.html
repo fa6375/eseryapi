@@ -91,12 +91,12 @@
           <div class="image-preview-grid">
             <figure th:each="img : ${project.images}">
               <img th:src="${img.imagePath}" th:alt="${img.caption ?: project.title}">
-              <form th:action="@{'/admin/projects/' + ${project.id} + '/images/' + ${img.id} + '/delete'}" method="post" data-confirm="Bu fotonu silmək istəyirsiniz?">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf != null}"/>
-                <button type="submit" class="remove-btn" aria-label="Fotonu sil">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 1.5L10.5 10.5M10.5 1.5L1.5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-                </button>
-              </form>
+              <button type="submit" class="remove-btn" aria-label="Fotonu sil"
+                      th:formaction="@{'/admin/projects/' + ${project.id} + '/images/' + ${img.id} + '/delete'}"
+                      formmethod="post" formnovalidate
+                      data-confirm="Bu fotonu silmək istəyirsiniz?">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 1.5L10.5 10.5M10.5 1.5L1.5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
             </figure>
           </div>
         </div>
