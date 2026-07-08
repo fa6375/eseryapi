@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${isEdit} ? 'Layihəni Redaktə Et — Admin' : 'Yeni Layihə — Admin'">Layihə Formu — Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+  <div th:replace="~{fragments/admin-sidebar :: sidebar(active='projects')}"></div>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <h1 th:text="${isEdit} ? 'Layihəni Redaktə Et' : 'Yeni Layihə'">Layihə Formu</h1>
+        <p class="sub">Başlıq işarəli sahələr məcburidir — qalanların hamısı istəyə bağlıdır.</p>
+      </div>
+      <a href="/admin/projects" class="btn btn-outline">&larr; Layihələrə Qayıt</a>
+    </div>
+
+    <form th:action="@{/admin/projects/save}" th:object="${project}" method="post" enctype="multipart/form-data">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf != null}"/>
+      <input type="hidden" th:field="*{id}"/>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Layihə Detalları</h2></div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="title">Layihə başlığı</label>
+            <input class="form-control" type="text" id="title" th:field="*{title}" required placeholder="məs. Nizami Biznes Mərkəzinin Fasadı">
+          </div>
+
+          <div class="form-group">
+            <label for="category">Kateqoriya</label>
+            <input class="form-control" type="text" id="category" th:field="*{category}" list="category-suggestions" placeholder="məs. Fasad və Pərdə Divar">
+            <datalist id="category-suggestions">
+              <option value="Yaşayış"></option>
+              <option value="Kommersiya"></option>
+              <option value="Fasad və Pərdə Divar"></option>
+              <option value="Sənaye"></option>
+              <option value="İnfrastruktur"></option>
+            </datalist>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" th:field="*{status}">
+              <option th:each="s : ${statuses}" th:value="${s}" th:text="${s.label}">Status</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Məkan</label>
+            <input class="form-control" type="text" id="location" th:field="*{location}" placeholder="məs. Yasamal rayonu, Bakı, Azərbaycan">
+          </div>
+
+          <div class="form-group">
+            <label for="year">İl</label>
+            <input class="form-control" type="number" id="year" th:field="*{year}" placeholder="2026" min="1990" max="2100">
+          </div>
+
+          <div class="form-group">
+            <label for="latitude">En dairəsi (istəyə bağlı, xəritə üçün)</label>
+            <input class="form-control" type="number" step="any" id="latitude" th:field="*{latitude}" placeholder="40.4093">
+          </div>
+
+          <div class="form-group">
+            <label for="longitude">Uzunluq dairəsi (istəyə bağlı, xəritə üçün)</label>
+            <input class="form-control" type="number" step="any" id="longitude" th:field="*{longitude}" placeholder="49.8671">
+          </div>
+
+          <div class="form-group">
+            <label for="areaSqm">Sahə (m², istəyə bağlı)</label>
+            <input class="form-control" type="number" id="areaSqm" th:field="*{areaSqm}" placeholder="4200">
+          </div>
+
+          <div class="form-group span-2">
+            <label for="description">Təsvir</label>
+            <textarea class="form-control" id="description" th:field="*{description}" style="min-height:180px;" placeholder="İşin əhatəsi, istifadə olunan materiallar, həll edilən texniki çətinliklər..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Fotolar</h2></div>
+
+        <div th:if="${isEdit and project.images != null and !project.images.isEmpty()}" style="margin-bottom:22px;">
+          <label style="display:block; font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:0.07em; color:var(--slate-soft); margin-bottom:10px;">Cari Fotolar</label>
+          <div class="image-preview-grid">
+            <figure th:each="img : ${project.images}">
+              <img th:src="${img.imagePath}" th:alt="${img.caption ?: project.title}">
+              <form th:action="@{'/admin/projects/' + ${project.id} + '/images/' + ${img.id} + '/delete'}" method="post" data-confirm="Bu fotonu silmək istəyirsiniz?">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf != null}"/>
+                <button type="submit" class="remove-btn" aria-label="Fotonu sil">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 1.5L10.5 10.5M10.5 1.5L1.5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </button>
+              </form>
+            </figure>
+          </div>
+        </div>
+
+        <label id="upload-drop" class="upload-drop" for="project-images-input">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4M12 4 7 9M12 4l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.6"/></svg>
+          <div><strong>Yükləmək üçün klikləyin</strong> və ya fotoları buraya sürükləyib buraxın</div>
+          <div style="font-size:12.5px; margin-top:4px;">Bir dəfəyə bir neçə şəkil seçə bilərsiniz (JPG, PNG, WebP)</div>
+        </label>
+        <input type="file" id="project-images-input" name="newImages" accept="image/*" multiple style="display:none;">
+        <div class="image-preview-grid" id="image-preview-grid"></div>
+      </div>
+
+      <div style="display:flex; gap:14px;">
+        <button type="submit" class="btn btn-primary">Layihəni Saxla</button>
+        <a href="/admin/projects" class="btn btn-outline">Ləğv Et</a>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${project.title} + ' — Eser Yapı MMC'">Layihə — Eser Yapı MMC</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header(active='projects')}"></div>
+
+<main>
+  <section class="pd-hero">
+    <div class="container">
+      <p class="breadcrumb"><a href="/">Ana Səhifə</a> / <a href="/projects">Layihələr</a> / <span th:text="${project.title}">Layihə</span></p>
+      <p class="eyebrow" th:text="${project.category ?: 'Layihə'}">Kateqoriya</p>
+      <h1 style="font-size:clamp(30px,4.2vw,46px);" th:text="${project.title}">Layihənin adı</h1>
+
+      <div class="pd-meta-row">
+        <div class="item" th:if="${project.location}">
+          <span class="k">Məkan</span>
+          <span th:text="${project.location}">Məkan</span>
+        </div>
+        <div class="item" th:if="${project.year}">
+          <span class="k">İl</span>
+          <span th:text="${project.year}">2026</span>
+        </div>
+        <div class="item">
+          <span class="k">Status</span>
+          <span class="status-pill" th:classappend="${#strings.toLowerCase(project.status)}" th:text="${project.status.label}">Status</span>
+        </div>
+        <div class="item" th:if="${project.areaSqm}">
+          <span class="k">Sahə</span>
+          <span th:text="${project.areaSqm} + ' m²'">0 m²</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <div th:if="${project.images != null and !project.images.isEmpty()}" class="gallery reveal-stagger" style="margin-bottom:64px;">
+        <a th:each="img : ${project.images}" th:href="${img.imagePath}" data-lightbox="true" th:attr="data-caption=${img.caption ?: project.title}">
+          <img th:src="${img.imagePath}" th:alt="${img.caption ?: project.title}">
+        </a>
+      </div>
+
+      <div style="max-width:760px;" class="reveal">
+        <p class="eyebrow">Bu Layihə Haqqında</p>
+        <p style="font-size:17px; color:var(--slate-soft); white-space:pre-line;" th:text="${project.description}">Layihənin təsviri burada göstərilir.</p>
+      </div>
+
+      <div th:if="${project.latitude != null and project.longitude != null}" class="map-frame reveal" style="max-width:760px; margin-top:40px;">
+        <iframe th:src="${'https://www.openstreetmap.org/export/embed.html?bbox=' + (project.longitude - 0.01) + ',' + (project.latitude - 0.008) + ',' + (project.longitude + 0.01) + ',' + (project.latitude + 0.008) + '&layer=mapnik&marker=' + project.latitude + ',' + project.longitude}"
+                loading="lazy"></iframe>
+      </div>
+
+      <div style="margin-top:56px;">
+        <a href="/projects" class="btn btn-outline">&larr; Bütün Layihələrə Qayıt</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Lightbox -->
+<div class="lightbox">
+  <button type="button" class="lightbox-close" aria-label="Bağla">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <button type="button" class="lightbox-nav lightbox-prev" aria-label="Əvvəlki şəkil">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2L4 8L10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <img src="" alt="">
+  <button type="button" class="lightbox-nav lightbox-next" aria-label="Növbəti şəkil">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2L12 8L6 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
