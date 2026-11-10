@@ -1,93 +1,57 @@
-# Eser Yapı MMC — Corporate Website (Spring Boot)
+# ESER YAPI — website
 
-A professional, animated corporate website for a facade / aluminum joinery / general
-contracting company, with a full admin panel for managing projects (with multiple photos,
-location and description) and partner logos.
+A single-page site for Eser Yapı with a scroll-driven construction film, light and dark themes, and Azerbaijani / English text. No framework and no dependencies to install.
 
-## Stack
+## Run it
 
-- **Java 17**, **Spring Boot 3.2.5**
-- **Spring MVC + Thymeleaf** for server-rendered pages
-- **Spring Data JPA + H2** (file-based, zero external DB setup required)
-- **Spring Security** for the admin panel (form login)
-- Plain **CSS + vanilla JS** for the animations (scroll reveals, animated counters, an
-  animated SVG "blueprint" hero, image lightbox, drag-and-drop image upload preview) —
-  no frontend build step needed.
+Open `index.html` in a browser — that is enough.
 
-## Running it
-
-You'll need **JDK 17+** and **Maven** installed locally (this project was built in a
-sandboxed environment without access to Maven Central, so it has **not** been
-compile-tested end-to-end — see "A note on verification" below).
-
-```bash
-cd construction-website
-mvn spring-boot:run
-```
-
-Then open **http://localhost:8080**.
-
-The H2 database file is created automatically at `./data/eseryapi.mv.db` the first
-time you run the app, and uploaded photos are stored under `./uploads/`. Both persist
-across restarts as long as you run the app from the same working directory.
-
-## Admin panel
-
-Go to **http://localhost:8080/admin/login**.
-
-- Username: `admin`
-- Password: `EserYapi2026!`
-
-**Change these before deploying anywhere public** — edit `app.admin.username` /
-`app.admin.password` in `src/main/resources/application.properties`.
-
-From the admin panel you can:
-- **Projects** — add/edit/delete projects with a title, category, location (plus optional
-  lat/long for an auto-embedded map on the project page), year, status, area, a long
-  description, and **multiple photos** (drag-and-drop or click to upload; each existing
-  photo can be removed individually when editing).
-- **Partners** — add/edit/delete partner or supplier logos shown on the homepage and the
-  public Partners page.
-- **Messages** — read and manage inquiries submitted through the public Contact form.
-
-The public **Projects** page and homepage are intentionally empty until you add your
-first project — they show a designed "empty state" rather than placeholder content.
-
-## Project structure
+To serve it like a real site instead:
 
 ```
-src/main/java/com/eseryapi/construction/
-  config/        Spring Security + static resource (uploads) configuration
-  model/         Project, ProjectImage, Partner, ContactMessage, ProjectStatus
-  repository/    Spring Data JPA repositories
-  service/       Business logic + file storage for uploaded images
-  controller/    Public site controllers
-  controller/admin/  Admin panel controllers (project/partner/message CRUD)
-
-src/main/resources/
-  templates/     Thymeleaf pages (+ fragments/ for shared header, footer, admin sidebar)
-  static/css/    Design system + all page styling and animations
-  static/js/     Scroll reveals, counters, lightbox, upload previews
-  application.properties
+npm start        # http://localhost:3000
 ```
 
-## Design notes
+## Deploy on Vercel
 
-The visual language is built around the company's actual specialty — facade and
-curtain-wall systems — rather than generic stock construction imagery: the hero animates
-a blueprint-style facade grid drawing itself in on load, and the same grid motif recurs
-through the about/services sections. Palette is graphite/steel with a cool "glass" cyan
-and a safety-amber accent; type pairs Space Grotesk (display), Inter (body) and IBM Plex
-Mono (labels/data), all loaded from Google Fonts.
+1. Push this folder to a GitHub repository.
+2. In Vercel choose **Add New → Project** and import the repository.
+3. Leave every setting as it is and press **Deploy**. `vercel.json` already tells Vercel what to do.
 
-## A note on verification
+During the build, Vercel runs `scripts/fetch-images.mjs`, which copies the logo and all project photos from eseryapi.az into `assets/`, so the live site serves them itself.
 
-This project was generated in a sandboxed build environment whose network access is
-restricted to a small allow-list of domains that does **not** include Maven Central, so
-`mvn compile` could not be run here to prove the build green end-to-end. Every file was
-checked by hand for structural correctness instead (balanced braces/tags in every Java
-and HTML file, valid JS syntax, well-formed XML in `pom.xml`, matching Thymeleaf
-attribute/property names against the entity getters/setters, and a known Spring data-
-binding pitfall — a file-upload field colliding with the `Project.images` collection —
-was found and fixed). Still, please run `mvn spring-boot:run` yourself and let me know if
-anything doesn't come up cleanly so it can be fixed quickly.
+## Photos and logo
+
+The site looks for each photo in `assets/images/` first. If a file is not there, it loads the same photo from eseryapi.az. If that fails too, the slot shows a styled tile with the project name, never a broken image.
+
+- `npm run images` downloads everything into `assets/images/` and `assets/logo/` on your own computer. Commit the result if you want the photos stored in the repository.
+- The logo is `assets/logo/eser-yapi-logo.png`. Replace that file to change it. Until the file exists, the header shows the name "ESER YAPI" as text.
+- To use a different photo, put the file in `assets/images/` under the same name as the one it replaces.
+
+## What is where
+
+```
+index.html                 the whole site: markup, styles, 3D film and page logic
+assets/animations/         still frames of the film (page backgrounds, and the fallback when 3D is unavailable)
+assets/fonts/              Inter Tight and Newsreader (with Azerbaijani letters)
+assets/images/             project photos (filled by `npm run images` or the Vercel build)
+assets/logo/               logo and favicon (filled the same way)
+assets/vendor/three.min.js 3D library (MIT licence)
+scripts/fetch-images.mjs   the photo downloader
+vercel.json, package.json  deployment settings
+```
+
+## Editing
+
+Everything is in `index.html`, in this order: styles, page markup, the film (`createFilm`), page logic.
+
+- **Text:** Azerbaijani is written directly in the markup. English is the `EN` list in the page logic. Each piece of text is tied to its translation by its `data-i18n` name.
+- **Projects and services:** the `PROJECTS` and `WAYS` lists in the page logic.
+- **Colours:** the variables at the top of the styles — `:root` for dark, `[data-theme="light"]` for light.
+- **Film:** `KEYS` is the camera path, `PRESETS` the lighting for each theme. The numbers in `apply()` set when each building stage happens (0 = top of the page, 1 = end of the film).
+
+## Notes
+
+- The film is drawn live in 3D and follows the scroll position. On devices without 3D support it switches to the still frames in `assets/animations/`.
+- The contact form checks the fields and then opens the visitor's email app with the message addressed to info@eseryapi.az. It does not send email by itself, so no server is needed.
+- The chosen theme and language are remembered in the visitor's browser.

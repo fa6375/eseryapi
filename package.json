@@ -1,0 +1,13 @@
+{
+  "name": "eser-yapi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Eser Yapı — company website (static, single page)",
+  "type": "module",
+  "scripts": {
+    "images": "node scripts/fetch-images.mjs",
+    "build": "node scripts/fetch-images.mjs",
+    "start": "npx --yes serve -l 3000 ."
+  },
+  "engines": { "node": ">=18" }
+}
