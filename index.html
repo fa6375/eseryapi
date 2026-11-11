@@ -9,7 +9,7 @@
 <meta property="og:title" content="Eser Yapı — Xəyallar inşa edirik">
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/film/og-eser-yapi.jpg">
-<link rel="preload" as="image" type="image/webp" href="assets/film/01-temel-1600.webp">
+<link rel="preload" as="image" type="image/webp" href="assets/film/01-temel-night-1600.webp">
 <link rel="icon" href="assets/logo/favicon.png">
 <script>
 /* theme is applied before first paint so there is no flash */
@@ -144,7 +144,8 @@ ul, ol { list-style: none; }
 .film { position: relative; height: 900vh; height: 900svh; background: var(--bg); }
 .film__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .film__screen { position: absolute; inset: 0; overflow: hidden; background: #1a1c22 center / cover no-repeat; animation: screen-in 1.4s var(--ease) backwards; will-change: transform; transform-origin: 100% 50%; }
-.film__screen { background-image: url(assets/film/01-temel-1600.webp); }
+[data-theme="light"] .film__screen { background-image: url(assets/film/01-temel-1600.webp); }
+[data-theme="dark"] .film__screen { background-image: url(assets/film/01-temel-night-1600.webp); }
 .film__screen canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .8s var(--ease); }
 .film.is-live .film__screen canvas { opacity: 1; }
 .film__stills { position: absolute; inset: 0; display: none; }
@@ -270,7 +271,7 @@ ul, ol { list-style: none; }
    ===================================================================== */
 .studio { position: relative; isolation: isolate; overflow: hidden; }
 .studio__bg, .contact__bg { position: absolute; inset: -9% 0; z-index: -1; background: center / cover no-repeat; will-change: transform; }
-[data-theme="dark"] .studio__bg { background-image: linear-gradient(180deg, var(--bg) 0%, rgba(10, 11, 13, .74) 28%, rgba(10, 11, 13, .82) 70%, var(--bg) 100%), url(assets/film/03-karkas-1600.webp); }
+[data-theme="dark"] .studio__bg { background-image: linear-gradient(180deg, var(--bg) 0%, rgba(10, 11, 13, .74) 28%, rgba(10, 11, 13, .82) 70%, var(--bg) 100%), url(assets/film/03-karkas-night-1600.webp); }
 [data-theme="light"] .studio__bg { background-image: linear-gradient(180deg, var(--bg) 0%, rgba(244, 241, 234, .8) 28%, rgba(244, 241, 234, .86) 70%, var(--bg) 100%), url(assets/film/03-karkas-1600.webp); }
 .studio__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 120px); align-items: center; min-height: min(78vh, 760px); }
 .studio__text .display { margin: 18px 0 24px; }
@@ -521,22 +522,22 @@ ul, ol { list-style: none; }
         <h1 data-i18n="cap.1.t">Hər bina <em>təməldən başlayır.</em></h1>
         <p data-i18n="cap.1.p">Torpağa çəkilən ilk xətdən başlayırıq. Aşağı sürüşdürün və binanın yüksəlişini izləyin.</p>
       </div>
-      <div class="cap is-r" data-from="0.16" data-to="0.42">
+      <div class="cap is-r" data-from="0.16" data-to="0.375">
         <p class="eyebrow" data-i18n="cap.2.e">02 — Karkas</p>
         <h2 data-i18n="cap.2.t">Kərpic-kərpic, <em>mərtəbə-mərtəbə.</em></h2>
         <p data-i18n="cap.2.p">Daşıyıcı divarlar, dam karkası və saat kimi işləyən tikinti meydançası.</p>
       </div>
-      <div class="cap is-l" data-from="0.49" data-to="0.675">
+      <div class="cap is-l" data-from="0.415" data-to="0.60">
         <p class="eyebrow" data-i18n="cap.3.e">03 — Fasad</p>
         <h2 data-i18n="cap.3.t">Fasad — <em>bizim imzamızdır.</em></h2>
         <p data-i18n="cap.3.p">Alüminium doğrama, kompozit panel və keramoqranit üzlük — layihədən quraşdırmaya qədər.</p>
       </div>
-      <div class="cap is-r" data-from="0.72" data-to="0.845">
+      <div class="cap is-r" data-from="0.655" data-to="0.80">
         <p class="eyebrow" data-i18n="cap.4.e">04 — İnteryer</p>
         <h2 data-i18n="cap.4.t">İçəri keçin — <em>yeni səhifə başlayır.</em></h2>
         <p data-i18n="cap.4.p">Dizayn, mühəndislik və quraşdırma — bir komanda, bir məsuliyyət.</p>
       </div>
-      <div class="cap is-l is-cool" data-from="0.875" data-to="0.945">
+      <div class="cap is-l is-cool" data-from="0.815" data-to="0.925">
         <p class="eyebrow" data-i18n="cap.5.e">05 — Yaşayış</p>
         <h2 data-i18n="cap.5.t">İşıq üçün <em>yaradılmış məkanlar.</em></h2>
         <p data-i18n="cap.5.p">Geniş şüşələmə içərini mənzərəyə açır.</p>
@@ -735,84 +736,137 @@ ul, ol { list-style: none; }
 
 <script>
 /* =====================================================================
-   ESER YAPI — scroll-driven construction film (photoreal frame sequence)
+   ESER YAPI — scroll-driven construction film
    One number drives everything: progress 0 → 1.
 
-   The film is a set of photographs of ONE house from ONE locked camera,
-   taken at successive stages of the build. Between two stages the next
-   one is ASSEMBLED piece by piece as you scroll: the picture is cut into
-   a brick-bond grid of blocks, and each block of the building drops into
-   place at its own moment (walls course by course, cladding board by
-   board, scaffolding down from the top, garden outwards from the house).
-   The order comes from assets/film/build-N.png, made by
-   scripts/build-order.py. Everything that is not the building blends.
+   The film is made of photographs of ONE house: seven exterior stages
+   and the finished dusk shot from one locked position, plus two shots
+   of the living room (during fit-out, and finished). Every photograph
+   has a day version (light theme) and a night version (dark theme).
 
-   0.02–0.15 ground-floor walls · 0.17–0.30 upper floor + roof frame ·
-   0.32–0.44 roof + insulation · 0.46–0.59 cladding + windows ·
-   0.61–0.74 scaffolding down · 0.76–0.88 garden + pool · 0.93–1.00 dusk
+   · Between two stages the next one is ASSEMBLED piece by piece as you
+     scroll: the picture is cut into a brick-bond grid of blocks and each
+     block where the building changes drops into place at its own moment
+     (walls course by course, cladding board by board, scaffolding down
+     from the top, furniture across the room). The order comes from
+     assets/film/build-N.png, made by scripts/build-order.py.
+   · A camera moves over the photographs the whole time — drifting,
+     tracking, tilting up to the roof — then dollies through the front
+     door into the living room, looks around while it is furnished, and
+     goes out through the glass onto the finished terrace.
+
+   0.02–0.14 ground-floor walls · 0.15–0.27 upper floor + roof frame ·
+   0.28–0.39 roof + insulation · 0.40–0.51 cladding + windows ·
+   0.52–0.62 scaffolding down · 0.69–0.72 through the door ·
+   0.78–0.84 room furnished · 0.87–0.90 out to the terrace · 0.93– dusk
    ===================================================================== */
 (function () {
   'use strict';
   function sat(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
   function span(p, a, b) { return sat((p - a) / (b - a)); }
   function smooth(x) { x = sat(x); return x * x * (3 - 2 * x); }
+  function smoother(x) { x = sat(x); return x * x * x * (x * (x * 6 - 15) + 10); }
   function lerp(a, b, t) { return a + (b - a) * t; }
 
   var DIR = 'assets/film/';
-  var FRAMES = ['01-temel', '02-zemin', '03-karkas', '04-dam', '05-fasad', '06-interyer', '07-yasayis', '08-tehvil'];
-  /* CUTS[i] takes frame i to frame i + 1 between progress `a` and `b` */
-  var CUTS = [
-    { a: 0.020, b: 0.150 }, { a: 0.165, b: 0.300 }, { a: 0.315, b: 0.440 }, { a: 0.455, b: 0.590 },
-    { a: 0.610, b: 0.735 }, { a: 0.760, b: 0.875 }, { a: 0.925, b: 0.995 }
+  /* 0–7 exterior (one camera position), 8–9 interior */
+  var FRAMES = ['01-temel', '02-zemin', '03-karkas', '04-dam', '05-fasad', '06-interyer', '07-yasayis', '08-tehvil', 'i1-icerisi', 'i2-qonaq-otagi'];
+  var INSIDE = { 8: true, 9: true };
+  var ORDER = [0, 1, 2, 3, 4, 5, 8, 9, 6, 7];               // the order they appear in — loading follows the scroll along it
+
+  /* what is on screen: shot i shows frame A turning into frame B between progress a and b
+     (build = assembled block by block with build-N.png; otherwise a dissolve). Between shots the last frame holds. */
+  var SHOTS = [
+    { a: 0.020, b: 0.140, A: 0, B: 1, build: 0 },
+    { a: 0.150, b: 0.270, A: 1, B: 2, build: 1 },
+    { a: 0.280, b: 0.390, A: 2, B: 3, build: 2 },
+    { a: 0.400, b: 0.510, A: 3, B: 4, build: 3 },
+    { a: 0.520, b: 0.620, A: 4, B: 5, build: 4 },
+    { a: 0.690, b: 0.722, A: 5, B: 8 },                     // through the front door
+    { a: 0.780, b: 0.840, A: 8, B: 9, build: 5 },
+    { a: 0.870, b: 0.900, A: 9, B: 6 },                     // out through the glass onto the terrace
+    { a: 0.930, b: 0.995, A: 6, B: 7 }                      // day turns to dusk
   ];
-  /* how each of the first six cuts is assembled — grid settings must match scripts/build-order.py.
+  /* how each build is assembled — must match scripts/build-order.py.
      cw/ch: block size in 1600-px frame pixels · bond: alternate rows offset like brickwork ·
-     dur: how much of the cut one block takes to settle · drop: how far a block falls into place (in block heights) */
+     dur: share of the shot one block takes to settle · drop: how far a block falls into place (in block heights) */
   var BUILD = [
     { cw: 22, ch: 12, bond: true,  dur: 0.10, drop: 1.6 },
     { cw: 22, ch: 12, bond: true,  dur: 0.10, drop: 1.6 },
     { cw: 22, ch: 12, bond: true,  dur: 0.10, drop: 1.2 },
     { cw: 12, ch: 26, bond: false, dur: 0.10, drop: 0.5 },
     { cw: 24, ch: 16, bond: true,  dur: 0.12, drop: 0 },
-    { cw: 30, ch: 20, bond: true,  dur: 0.16, drop: 0 }
+    { cw: 26, ch: 18, bond: true,  dur: 0.14, drop: 0.8 }
   ];
-  var RATIO = 16 / 9, FOCUS_W = 0.58;                       // portrait screens show the middle 58% of the frame, where the house stands
+  /* the camera: [progress, zoom, x, y] — zoom over a full-screen fit, (x, y) the point of the photograph
+     held at the centre of the screen. One path for the outside, one for the room; both run all the time
+     and each photograph uses its own, so the cut through the door is one continuous move. */
+  var CAM_OUT = [
+    [0.000, 1.20, 0.50, 0.53], [0.080, 1.16, 0.43, 0.55], [0.200, 1.30, 0.59, 0.47], [0.330, 1.24, 0.52, 0.37],
+    [0.400, 1.42, 0.36, 0.45], [0.510, 1.42, 0.64, 0.45], [0.580, 1.12, 0.52, 0.51], [0.630, 1.16, 0.50, 0.53],
+    [0.690, 1.95, 0.545, 0.57], [0.722, 3.40, 0.545, 0.575],
+    [0.870, 2.60, 0.54, 0.68], [0.900, 1.75, 0.53, 0.63], [0.945, 1.06, 0.50, 0.52], [1.000, 1.00, 0.50, 0.50]
+  ];
+  var CAM_IN = [
+    [0.690, 1.60, 0.50, 0.53], [0.722, 1.18, 0.50, 0.52], [0.775, 1.24, 0.34, 0.55], [0.840, 1.24, 0.66, 0.53],
+    [0.862, 1.30, 0.51, 0.44], [0.900, 3.00, 0.505, 0.42]
+  ];
+  function camAt(keys, p) {
+    if (p <= keys[0][0]) return keys[0];
+    for (var i = 1; i < keys.length; i++) {
+      var k1 = keys[i];
+      if (p <= k1[0]) {
+        var k0 = keys[i - 1], e = smoother((p - k0[0]) / (k1[0] - k0[0]));
+        return [p, Math.exp(lerp(Math.log(k0[1]), Math.log(k1[1]), e)), lerp(k0[2], k1[2], e), lerp(k0[3], k1[3], e)];
+      }
+    }
+    return keys[keys.length - 1];
+  }
+  var RATIO = 16 / 9, FOCUS_W = 0.58;                       // portrait screens show 58% of the frame's width at zoom 1
 
   function createFilm(canvas, opt) {
     opt = opt || {};
     var ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) throw new Error('2d canvas unavailable');
-    var over = document.createElement('canvas'), octx = over.getContext('2d');   // incoming frame (portrait cross-fade)
-    var comp = document.createElement('canvas'), cctx = comp.getContext('2d');   // the stage being assembled, at photograph size
-    var holes = {};                                                               // per cut: next frame with the building blocks cut out
-    var band = document.createElement('canvas'), bctx = band.getContext('2d');   // feathered sharp band (portrait layout)
-    var soft = document.createElement('canvas'), sctx = soft.getContext('2d');   // tiny copy, scaled up = blurred backdrop
+    var scene = document.createElement('canvas'), sctx2 = scene.getContext('2d');   // the other theme, while the theme changes
+    var band = document.createElement('canvas'), bctx = band.getContext('2d');      // feathered sharp band (portrait layout)
+    var soft = document.createElement('canvas'), sctx = soft.getContext('2d');      // tiny copy, scaled up = blurred backdrop
+    var comp = document.createElement('canvas'), cctx = comp.getContext('2d');      // the stage being assembled, at photograph size
     soft.width = 48; soft.height = 27;
-    var state = { w: 0, h: 0, cur: 0, target: 0, theme: opt.theme === 'light' ? 1 : 0, themeTarget: opt.theme === 'light' ? 1 : 0, active: true, dirty: true, raf: 0, last: 0, ready: false, shift: 0, shiftTarget: 0 };
-    var reduced = !!opt.reduced, frames = [], size = '1600', intro = reduced ? 1 : 0;
+    var holes = {};                                                                  // per build + theme: next frame with the building cut out
+    var themeT = opt.theme === 'light' ? 1 : 0;
+    var state = { w: 0, h: 0, cur: 0, target: 0, theme: themeT, themeTarget: themeT, active: true, dirty: true, raf: 0, last: 0, ready: false, shift: 0, shiftTarget: 0 };
+    var reduced = !!opt.reduced, sets = { day: [], night: [] }, size = '1600', intro = reduced ? 1 : 0;
 
-    /* ---------- loading: first frame at once, the rest in the background, nearest to the scroll position first ---------- */
-    function load(i, done) {
-      var f = frames[i]; if (f.state) { if (done) done(); return; }
+    /* ---------- loading: what is on screen first, then outward along the film, the other theme last ---------- */
+    function want() { return state.themeTarget > 0.5 ? 'day' : 'night'; }
+    function load(set, i, done) {
+      var f = sets[set][i]; if (f.state) { if (done) done(); return; }
       f.state = 1;
       var im = new Image(); im.decoding = 'async';
       im.onload = function () {
         var fin = function () { f.img = im; f.state = 2; state.dirty = true; request(); if (!state.ready) { state.ready = true; if (opt.onReady) opt.onReady(); } if (done) done(); };
         if (im.decode) im.decode().then(fin, fin); else fin();
       };
-      im.onerror = function () { f.state = 3; f.fails = (f.fails || 0) + 1; if (opt.onError && i === 0) opt.onError(); if (done) done(); };
-      im.src = DIR + FRAMES[i] + '-' + size + '.webp';
+      im.onerror = function () { f.state = 3; if (opt.onError && !state.ready && f === sets[want()][at(state.target).A]) opt.onError(); if (done) done(); };
+      im.src = DIR + FRAMES[i] + (set === 'night' ? '-night-' : '-') + size + '.webp';
     }
     function pump() {
-      var want = at(state.target).i, best = -1, bd = 99;
-      for (var i = 0; i < frames.length; i++) if (!frames[i].state && Math.abs(i - want) < bd) { bd = Math.abs(i - want); best = i; }
-      if (best >= 0) load(best, pump);
+      var here = ORDER.indexOf(at(state.target).A), best = null, bd = 1e9;
+      [want(), want() === 'day' ? 'night' : 'day'].forEach(function (set, n) {
+        for (var k = 0; k < ORDER.length; k++) {
+          var i = ORDER[k], d = Math.abs(k - here) + n * 100;
+          if (!sets[set][i].state && d < bd) { bd = d; best = [set, i]; }
+        }
+      });
+      if (best) load(best[0], best[1], pump);
     }
-    function loadPlan(i) {                                 // build-N.png: one pixel per block, 0 = blend, 1..255 = when it is placed
+    function loadPlan(n) {                                  // build-N.png: one pixel per block, 0 = blend, 1..255 = when it is placed
       var im = new Image();
       im.onload = function () {
+        var g = BUILD[n];
         try {
-          var g = BUILD[i], c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+          var c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
           var x = c.getContext('2d'); x.drawImage(im, 0, 0);
           var px = x.getImageData(0, 0, im.width, im.height).data, cells = [];
           for (var r = 0; r < im.height; r++) for (var q = 0; q < im.width; q++) {
@@ -821,83 +875,90 @@ ul, ol { list-style: none; }
             cells.push({ x: bx0, y: by, w: bx + g.cw - bx0, h: g.ch, t: (v - 1) / 254 * (1 - g.dur) });
           }
           g.cells = cells; state.dirty = true; request();
-        } catch (e) { g.cells = null; }                    // e.g. opened from disk: that cut simply cross-fades
+        } catch (e) { g.cells = null; }                    // e.g. opened from disk: that shot simply dissolves
       };
-      im.src = DIR + 'build-' + (i + 1) + '.png';
+      im.src = DIR + 'build-' + (n + 1) + '.png';
     }
     function start() {
       size = Math.max(state.w, state.h) * (window.devicePixelRatio || 1) > 1900 ? '2560' : '1600';
-      for (var i = 0; i < FRAMES.length; i++) frames.push({ img: null, state: 0 });
-      for (var j = 0; j < BUILD.length; j++) loadPlan(j);
-      var first = at(state.target).i;
-      load(first, function () { pump(); pump(); });         // two in flight at a time
+      for (var i = 0; i < FRAMES.length; i++) { sets.day.push({ img: null, state: 0 }); sets.night.push({ img: null, state: 0 }); }
+      for (var n = 0; n < BUILD.length; n++) loadPlan(n);
+      load(want(), at(state.target).A, function () { pump(); pump(); });   // two in flight at a time
     }
 
-    /* ---------- progress → which frame(s) ---------- */
+    /* ---------- progress → what is on screen ---------- */
     function at(p) {
-      for (var i = CUTS.length - 1; i >= 0; i--) {
-        var c = CUTS[i];
-        if (p >= c.b) return { i: i + 1, t: 0 };
-        if (p > c.a) return { i: i, t: (p - c.a) / (c.b - c.a) };
+      var hold = SHOTS[0].A;
+      for (var i = 0; i < SHOTS.length; i++) {
+        var s = SHOTS[i];
+        if (p < s.a) break;
+        if (p < s.b) return { A: s.A, B: s.B, t: (p - s.a) / (s.b - s.a), build: s.build };
+        hold = s.B;
       }
-      return { i: 0, t: 0 };
+      return { A: hold, B: null, t: 0 };
     }
-    function usable(i) {                                    // the frame asked for, or the closest one that has arrived
-      if (frames[i] && frames[i].state === 2) return frames[i].img;
-      for (var d = 1; d < frames.length; d++) {
-        if (frames[i - d] && frames[i - d].state === 2) return frames[i - d].img;
-        if (frames[i + d] && frames[i + d].state === 2) return frames[i + d].img;
+    function usable(set, i) {                              // the photograph asked for, or the nearest one along the film that has arrived
+      var list = sets[set];
+      if (list[i] && list[i].state === 2) return list[i].img;
+      var k = ORDER.indexOf(i);
+      for (var d = 1; d < ORDER.length; d++) {
+        var lo = ORDER[k - d], hi = ORDER[k + d];
+        if (lo != null && !!INSIDE[lo] === !!INSIDE[i] && list[lo].state === 2) return list[lo].img;
+        if (hi != null && !!INSIDE[hi] === !!INSIDE[i] && list[hi].state === 2) return list[hi].img;
       }
       return null;
     }
 
     /* ---------- drawing ---------- */
-    function picture(c, im, p) {
+    function picture(c, im, cam, alpha) {
       var W = state.w, H = state.h, iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height;
-      var settle = 1 + 0.05 * Math.pow(1 - intro, 3);                         // the picture eases back into place when the page opens
-      var zoom = lerp(1.1, 1, smooth(p)) * settle;                             // …and pulls back slowly across the whole build
-      if (W / H >= 1) {                                                        // landscape: fill the screen
-        var s = Math.max(W / iw, H / ih) * zoom, dw = iw * s, dh = ih * s;
-        var room = (dw - W) * 0.5, slide = Math.max(-room, Math.min(room, state.shift * W * 0.045));   // drift away from the caption, never past the picture's edge
-        c.drawImage(im, (W - dw) * 0.5 - slide, (H - dh) * 0.5, dw, dh);
+      var z = cam[1] * (1 + 0.05 * Math.pow(1 - intro, 3)), fx = cam[2], fy = cam[3];   // the picture also eases into place when the page opens
+      c.globalAlpha = alpha == null ? 1 : alpha;
+      if (W / H >= 1) {                                                      // landscape: fill the screen
+        var s = Math.max(W / iw, H / ih) * z, dw = iw * s, dh = ih * s;
+        var ox = W / 2 - fx * dw - state.shift * W * 0.045, oy = H / 2 - fy * dh;   // …and drifts away from the caption
+        ox = Math.min(0, Math.max(W - dw, ox)); oy = Math.min(0, Math.max(H - dh, oy));
+        c.drawImage(im, ox, oy, dw, dh);
+        c.globalAlpha = 1;
         return;
       }
-      // portrait: the house stays whole in a soft-edged band, over a blurred, enlarged copy of the same photograph
+      // portrait: the photograph sits in a soft-edged band over a blurred, enlarged copy of itself
       sctx.drawImage(im, 0, 0, soft.width, soft.height);
       var bs = Math.max(W / soft.width, H / soft.height) * 1.25, bw = soft.width * bs, bh = soft.height * bs;
       c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
       c.drawImage(soft, (W - bw) * 0.5, (H - bh) * 0.5, bw, bh);
-      var k = W / (FOCUS_W * iw) * lerp(1.05, 1, smooth(p)) * settle, w2 = iw * k, h2 = w2 / RATIO;
-      var x2 = (W - w2) * 0.5, y2 = H * 0.39 - h2 * 0.5, fe = h2 * 0.16;
-      bctx.globalCompositeOperation = 'source-over'; bctx.clearRect(0, 0, W, H);
+      var k = W / (FOCUS_W * iw) * Math.pow(z, 0.6), w2 = iw * k, h2 = ih * k;   // the band already shows a close crop: gentler zoom
+      var x2 = Math.min(0, Math.max(W - w2, W / 2 - fx * w2)), y2 = H * 0.39 - fy * h2, fe = Math.min(h2 * 0.16, H * 0.12);
+      bctx.globalCompositeOperation = 'source-over'; bctx.globalAlpha = 1; bctx.clearRect(0, 0, W, H);
       bctx.drawImage(im, x2, y2, w2, h2);
       var g = bctx.createLinearGradient(0, y2, 0, y2 + h2);
       g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(fe / h2, 'rgba(0,0,0,1)'); g.addColorStop(1 - fe / h2, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
       bctx.globalCompositeOperation = 'destination-in'; bctx.fillStyle = g; bctx.fillRect(0, 0, W, H);
       c.drawImage(band, 0, 0);
+      c.globalAlpha = 1;
     }
     /* the next stage with every building block cut out: what is left (sky, ground, trees) simply blends */
-    function cutOut(i, b, s) {
-      var h = holes[i];
+    function cutOut(n, set, b, s) {
+      var key = n + set, h = holes[key];
       if (h && h.img === b) return h.c;
-      for (var key in holes) if (Math.abs(key - i) > 1) delete holes[key];        // keep memory down: only the neighbours
+      for (var k in holes) if (Math.abs(parseInt(k, 10) - n) > 1) delete holes[k];   // keep memory down: only the neighbours
       var c = document.createElement('canvas'), x = c.getContext('2d'); c.width = b.naturalWidth; c.height = b.naturalHeight;
       x.drawImage(b, 0, 0); x.globalCompositeOperation = 'destination-out'; x.beginPath();
-      BUILD[i].cells.forEach(function (q) { x.rect(q.x * s, q.y * s, q.w * s, q.h * s); });
+      BUILD[n].cells.forEach(function (q) { x.rect(q.x * s, q.y * s, q.w * s, q.h * s); });
       x.fill();
-      holes[i] = { img: b, c: c };
+      holes[key] = { img: b, c: c };
       return c;
     }
-    /* assemble stage i + 1 over stage i: placed blocks show the new photograph, blocks being placed drop in */
-    function assemble(i, a, b, t) {
-      var g = BUILD[i], iw = a.naturalWidth, ih = a.naturalHeight, s = iw / 1600;
+    /* assemble the next stage over this one: placed blocks show the new photograph, blocks being placed drop in */
+    function assemble(n, set, a, b, t) {
+      var g = BUILD[n], iw = a.naturalWidth, ih = a.naturalHeight, s = iw / 1600;
       if (comp.width !== iw || comp.height !== ih) { comp.width = iw; comp.height = ih; }
       cctx.globalAlpha = 1; cctx.drawImage(a, 0, 0);
       var f = smooth(span(t, 0.04, 0.7));
-      if (f > 0) { cctx.globalAlpha = f; cctx.drawImage(cutOut(i, b, s), 0, 0); cctx.globalAlpha = 1; }
+      if (f > 0) { cctx.globalAlpha = f; cctx.drawImage(cutOut(n, set, b, s), 0, 0); cctx.globalAlpha = 1; }
       var done = new Path2D(), any = false, moving = [];
-      for (var n = 0; n < g.cells.length; n++) {
-        var q = g.cells[n];
+      for (var i = 0; i < g.cells.length; i++) {
+        var q = g.cells[i];
         if (t >= q.t + g.dur) { done.rect(q.x * s, q.y * s, q.w * s, q.h * s); any = true; }
         else if (t > q.t) moving.push(q);
       }
@@ -912,25 +973,26 @@ ul, ol { list-style: none; }
       cctx.globalAlpha = 1;
       return comp;
     }
+    function cam(i, p) { return camAt(INSIDE[i] ? CAM_IN : CAM_OUT, p); }
+    function render(c, set, p) {                            // one theme's picture of the film at progress p
+      var k = at(p), a = usable(set, k.A);
+      if (!a) return false;
+      var b = k.B != null && k.t > 0 && sets[set][k.B].state === 2 ? sets[set][k.B].img : null, g = k.build != null ? BUILD[k.build] : null;
+      if (b && g && g.cells && b.naturalWidth === a.naturalWidth) { picture(c, assemble(k.build, set, a, b, k.t), cam(k.A, p)); return true; }
+      picture(c, a, cam(k.A, p));
+      if (b) picture(c, b, cam(k.B, p), INSIDE[k.A] !== INSIDE[k.B] ? smooth(span(k.t, 0.15, 0.85)) : smooth(k.t));
+      return true;
+    }
     function draw(p) {
-      var W = state.w, H = state.h, k = at(p), a = usable(k.i);
-      if (!a || W < 2) return false;
+      var W = state.w, H = state.h, th = state.theme;
+      if (W < 2) return false;
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
-      var b = k.t > 0 && frames[k.i + 1] && frames[k.i + 1].state === 2 ? frames[k.i + 1].img : null;
-      var g = BUILD[k.i];
-      if (b && b !== a && g && g.cells && b.naturalWidth === a.naturalWidth) { picture(ctx, assemble(k.i, a, b, k.t), p); b = null; }
-      else picture(ctx, a, p);
-      if (b && b !== a) {
-        var e = smooth(k.t);
-        if (W / H >= 1) {
-          ctx.globalAlpha = e; picture(ctx, b, p); ctx.globalAlpha = 1;
-        } else {
-          octx.globalCompositeOperation = 'source-over'; octx.clearRect(0, 0, W, H);
-          picture(octx, b, p); ctx.globalAlpha = e; ctx.drawImage(over, 0, 0); ctx.globalAlpha = 1;
-        }
+      var first = th < 0.5 ? 'night' : 'day', second = first === 'day' ? 'night' : 'day', mix = th < 0.5 ? th : 1 - th;
+      if (!render(ctx, first, p) && !render(ctx, second, p)) return false;
+      if (mix > 0.002) {                                     // changing theme: the other version dissolves in
+        sctx2.globalAlpha = 1; sctx2.clearRect(0, 0, W, H);
+        if (render(sctx2, second, p)) { ctx.globalAlpha = mix; ctx.drawImage(scene, 0, 0); ctx.globalAlpha = 1; }
       }
-      var night = (1 - state.theme) * 0.15;                                    // dark theme: a slightly deeper grade
-      if (night > 0.004) { ctx.fillStyle = 'rgba(6,8,14,' + night.toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
       return true;
     }
 
@@ -943,7 +1005,7 @@ ul, ol { list-style: none; }
       if (intro < 1 && state.ready) { intro = Math.min(1, intro + dt / 2.4); state.dirty = true; }
       var ds = state.shiftTarget - state.shift;
       if (reduced || Math.abs(ds) <= 0.002) { if (ds !== 0) { state.shift = state.shiftTarget; state.dirty = true; } } else { state.shift += ds * (1 - Math.exp(-dt * 2.6)); state.dirty = true; }
-      if (Math.abs(dth) > 0.002) { state.theme += dth * (1 - Math.exp(-dt * 4.5)); state.dirty = true; } else if (dth !== 0) { state.theme = state.themeTarget; state.dirty = true; }
+      if (Math.abs(dth) > 0.002) { state.theme += dth * (1 - Math.exp(-dt * 3.2)); state.dirty = true; } else if (dth !== 0) { state.theme = state.themeTarget; state.dirty = true; }
       if (state.dirty && state.active) {
         state.dirty = false; draw(state.cur);
         if (opt.onFrame) opt.onFrame(state.cur);
@@ -954,17 +1016,21 @@ ul, ol { list-style: none; }
     function request() { if (!state.raf) state.raf = requestAnimationFrame(frame); }
 
     var api = {
-      setProgress: function (p) { p = sat(p); if (p !== state.target) { state.target = p; request(); } },
+      setProgress: function (p) { p = sat(p); if (p !== state.target) { state.target = p; if (sets.day.length) pump(); request(); } },
       setShift: function (v) { v = Math.max(-1, Math.min(1, v)); if (Math.abs(v - state.shiftTarget) > 0.01) { state.shiftTarget = v; request(); } },
       jump: function (p) { state.target = state.cur = sat(p); state.dirty = true; request(); },
-      setTheme: function (name, instant) { state.themeTarget = name === 'light' ? 1 : 0; if (instant) state.theme = state.themeTarget; state.dirty = true; request(); },
+      setTheme: function (name, instant) {
+        state.themeTarget = name === 'light' ? 1 : 0; if (instant || reduced) state.theme = state.themeTarget;
+        if (sets.day.length) { var i = at(state.target).A; load(want(), i, pump); }
+        state.dirty = true; request();
+      },
       setActive: function (on) { state.active = !!on; if (on) { state.dirty = true; request(); } },
       resize: function (w, h) {
         if (w < 2 || h < 2) return;
         var dpr = Math.min(window.devicePixelRatio || 1, 2), cap = 2880 / Math.max(w * dpr, h * dpr); if (cap < 1) dpr *= cap;
         state.w = Math.round(w * dpr); state.h = Math.round(h * dpr);
-        [canvas, over, band].forEach(function (c) { c.width = state.w; c.height = state.h; });
-        if (!frames.length) start();
+        [canvas, scene, band].forEach(function (c) { c.width = state.w; c.height = state.h; });
+        if (!sets.day.length) start();
         state.dirty = true; draw(state.cur); request();
       },
       renderNow: function () { draw(state.cur); },
@@ -974,7 +1040,7 @@ ul, ol { list-style: none; }
   }
 
   window.EserFilm = {
-    frames: FRAMES, cuts: CUTS, build: BUILD, dir: DIR,
+    frames: FRAMES, shots: SHOTS, dir: DIR,
     supported: function () { try { return !!document.createElement('canvas').getContext('2d'); } catch (e) { return false; } },
     create: createFilm
   };
@@ -1187,7 +1253,7 @@ ul, ol { list-style: none; }
   var caps = $$('.cap').map(function (el) { return { el: el, from: parseFloat(el.dataset.from), to: parseFloat(el.dataset.to), left: el.classList.contains('is-l') }; });
   var handover = $('.handover'), shade = $('.film__shade'), sideL = $('.film__side.is-l'), sideR = $('.film__side.is-r'), hint = $('.film__hint'), hud = $('.hud');
   var hudDay = $('#hud-day'), hudPct = $('#hud-pct'), hudStage = $('#hud-stage'), hudBar = $('#hud-bar'), hudLine = $$('#hud-line li'), planPaths = $$('#hud-plan path');
-  var STOPS = [0.12, 0.47, 0.70, 0.86, 0.955], FILM = window.EserFilm || { frames: [], cuts: [], dir: '' };
+  var STOPS = [0.12, 0.40, 0.63, 0.80, 0.955], FILM = window.EserFilm || { frames: [], shots: [], dir: '' };
   var hudLineEl = $('#hud-line'), hudX = [], navBar = $('#nav-progress'), parallax = $$('.studio__bg, .contact__bg').map(function (el) { return { el: el, box: el.parentNode }; });
   var geo = { vh: 1, total: 1, filmLen: 1, narrow: false, w: 0, h: 0 }, lastP = 0, lastQ = 0, lastStage = -1, stills = null;
 
@@ -1217,15 +1283,17 @@ ul, ol { list-style: none; }
     planPaths.forEach(function (pt, i) { pt.style.strokeDashoffset = (1 - sat(p / 0.6 * 3 - i)).toFixed(3); });
   }
   function paintStills(p) {                                    // fallback when the canvas film cannot run: plain cross-fading photographs
-    if (!stills) return;
-    var i = 0, w = 0;
-    for (var c = FILM.cuts.length - 1; c >= 0; c--) {
-      if (p >= FILM.cuts[c].b) { i = c + 1; break; }
-      if (p > FILM.cuts[c].a) { i = c; w = span(p, FILM.cuts[c].a, FILM.cuts[c].b); break; }
+    if (!stills || !FILM.shots.length) return;
+    var A = FILM.shots[0].A, B = -1, w = 0, suffix = theme() === 'light' ? '-1600.webp' : '-night-1600.webp';
+    for (var c = 0; c < FILM.shots.length; c++) {
+      var s = FILM.shots[c]; if (p < s.a) break;
+      if (p < s.b) { A = s.A; B = s.B; w = span(p, s.a, s.b); break; }
+      A = s.B;
     }
     stills.forEach(function (im, k) {
-      if (Math.abs(k - i) <= 1 && !im.getAttribute('src')) im.src = FILM.dir + FILM.frames[k] + '-1600.webp';
-      im.style.opacity = k === i ? 1 : k === i + 1 ? smooth(w) : 0; im.style.zIndex = k === i + 1 ? 2 : 1;
+      var want = FILM.dir + FILM.frames[k] + suffix;
+      if ((k === A || k === B) && im.getAttribute('src') !== want) im.src = want;
+      im.style.opacity = k === A ? 1 : k === B ? smooth(w) : 0; im.style.zIndex = k === B ? 2 : 1;
     });
   }
   function paintFilm(p) {                                       // called with the smoothed progress, in step with the picture

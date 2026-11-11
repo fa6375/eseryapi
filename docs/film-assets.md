@@ -12,6 +12,10 @@ The film is eight photographs of **one house from one locked camera**. They were
 | `06-interyer` | 04 İnteryer — exterior finished, rooms under fit-out, terrace being laid | edit of `07` |
 | `07-yasayis` | 05 Yaşayış — finished, furnished, landscaped (**the master image**) | text prompt |
 | `08-tehvil` | 06 Təhvil — the same house at dusk, lights on | edit of `07` |
+| `i2-qonaq-otagi` | the living room, finished, looking out through the glass doors | text prompt with `07` as reference |
+| `i1-icerisi` | the same room during fit-out | edit of `i2` |
+
+Every file also has a `-night` version for the dark theme, made by `scripts/night-frames.py`: the sky comes from `08-tehvil` (same camera), daylight becomes moonlight, lamps and work lights stay warm, and in the living room only the three glass doors show the night outside.
 
 ## Why it is consistent
 

@@ -24,6 +24,8 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 FILM = ROOT / 'assets' / 'film'
 FRAMES = ['01-temel', '02-zemin', '03-karkas', '04-dam', '05-fasad', '06-interyer', '07-yasayis', '08-tehvil']
+# build-N.png assembles PAIRS[N-1][1] over PAIRS[N-1][0]
+PAIRS = [('01-temel', '02-zemin'), ('02-zemin', '03-karkas'), ('03-karkas', '04-dam'), ('04-dam', '05-fasad'), ('05-fasad', '06-interyer'), ('i1-icerisi', 'i2-qonaq-otagi')]
 W, H = 1600, 905                      # grid is laid out in the coordinates of the 1600 px frames
 
 # where things happen, as fractions of the frame (the house sits in the middle, the pool and site in front)
@@ -37,7 +39,7 @@ BUILD = [
     dict(cw=22, ch=12, bond=True,  order='roof',      dur=0.10, thr=20),   # shell -> roof sheets + insulation
     dict(cw=12, ch=26, bond=False, order='boards',    dur=0.10, thr=18),   # -> cladding, render, windows
     dict(cw=24, ch=16, bond=True,  order='dismantle', dur=0.12, thr=18),   # scaffolding down, facade finished
-    dict(cw=30, ch=20, bond=True,  order='garden',    dur=0.16, thr=16),   # landscaping, pool filled, furniture
+    dict(cw=26, ch=18, bond=True,  order='furnish',   dur=0.14, thr=16, zone=(0, 0, 1, 1)),   # living room: floor, furniture, view
 ]
 
 
@@ -74,14 +76,14 @@ def plan(i, cfg, a, b):
             box = (max(0, x0), max(0, y0), min(W, x1), min(H, y1))
             if box[2] <= box[0] or box[3] <= box[1]:
                 continue
-            zone = (HOUSE[0], cfg.get('top', HOUSE[1]), HOUSE[2], HOUSE[3])
+            zone = cfg.get('zone') or (HOUSE[0], cfg.get('top', HOUSE[1]), HOUSE[2], HOUSE[3])
             house, front = inside(box, zone), inside(box, FRONT)
             if not (house or front):
                 continue
             if diff[box[1]:box[3], box[0]:box[2]].mean() < cfg['thr']:
                 continue
             r_, g_, b_ = b[box[1]:box[3], box[0]:box[2]].reshape(-1, 3).mean(axis=0)
-            if house and o_ != 'garden' and g_ > r_ * 0.98 and g_ > b_ * 1.08:   # foliage seen through the frame: blend it, don't build it
+            if house and o_ not in ('garden', 'furnish') and g_ > r_ * 0.98 and g_ > b_ * 1.08:   # foliage seen through the frame: blend it, don't build it
                 continue
             cells.append(dict(c=c, r=r, cx=(box[0] + box[2]) / 2 / W, cy=(box[1] + box[3]) / 2 / H, house=house))
     if not cells:
@@ -114,6 +116,8 @@ def plan(i, cfg, a, b):
                 t = 0.80 * nx(k) + 0.12 * (1 - ny(k)) + 0.08 * j
             elif o == 'dismantle':                                  # scaffolding comes down level by level from the top
                 t = 0.82 * ny(k) + 0.10 * (nx(k) if int(ny(k) * 12) % 2 else 1 - nx(k)) + 0.08 * j
+            elif o == 'furnish':                                    # the room is furnished across, left to right, as the camera pans
+                t = 0.70 * nx(k) + 0.30 * j
             elif o == 'garden':                                     # landscaping spreads out from the house
                 d = ((k['cx'] - 0.5) ** 2 + ((k['cy'] - 0.64) * 1.6) ** 2) ** 0.5
                 t = min(1, d / 0.5) * 0.78 + 0.22 * j
@@ -126,13 +130,13 @@ def plan(i, cfg, a, b):
 
 def main():
     debug = '--debug' in sys.argv
-    imgs = [load(n) for n in FRAMES[:len(BUILD) + 1]]
     for i, cfg in enumerate(BUILD):
-        out, cells = plan(i, cfg, imgs[i], imgs[i + 1])
+        a, b = load(PAIRS[i][0]), load(PAIRS[i][1])
+        out, cells = plan(i, cfg, a, b)
         Image.fromarray(out).save(FILM / f'build-{i + 1}.png', optimize=True)
         print(f'build-{i + 1}.png  {out.shape[1]}x{out.shape[0]} blocks, {len(cells)} placed')
         if debug:
-            vis = imgs[i + 1].copy()
+            vis = b.copy()
             for k in cells:
                 x0, y0, x1, y1 = cell_box(cfg, k['c'], k['r'])
                 x0, y0 = max(0, x0), max(0, y0)
