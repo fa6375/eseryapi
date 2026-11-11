@@ -1,6 +1,6 @@
 # ESER YAPI — website
 
-A single-page site for Eser Yapı with a scroll-driven construction film, light and dark themes, and Azerbaijani / English text. No framework and no dependencies to install.
+A single-page site for Eser Yapı with a scroll-driven, photorealistic construction film, light and dark themes, and Azerbaijani / English text. No framework and no dependencies to install.
 
 ## Run it
 
@@ -31,27 +31,27 @@ The site looks for each photo in `assets/images/` first. If a file is not there,
 ## What is where
 
 ```
-index.html                 the whole site: markup, styles, 3D film and page logic
-assets/animations/         still frames of the film (page backgrounds, and the fallback when 3D is unavailable)
+index.html                 the whole site: markup, styles, the film and page logic
+assets/film/               the film: eight photographs of one house from one locked camera, WebP at 1600 and 2560 px wide
+docs/film-assets.md        how the film frames were made (prompts, sizes) and how to replace or extend them
 assets/fonts/              Inter Tight and Newsreader (with Azerbaijani letters)
 assets/images/             project photos (filled by `npm run images` or the Vercel build)
 assets/logo/               logo and favicon (filled the same way)
-assets/vendor/three.min.js 3D library (MIT licence)
 scripts/fetch-images.mjs   the photo downloader
 vercel.json, package.json  deployment settings
 ```
 
 ## Editing
 
-Everything is in `index.html`, in this order: styles, page markup, the film (`createFilm`), page logic.
+Everything is in `index.html`, in this order: styles, page markup, the film (`createFilm`), page logic. There are no libraries: animation is plain CSS plus one scroll loop and one IntersectionObserver.
 
 - **Text:** Azerbaijani is written directly in the markup. English is the `EN` list in the page logic. Each piece of text is tied to its translation by its `data-i18n` name.
 - **Projects and services:** the `PROJECTS` and `WAYS` lists in the page logic.
 - **Colours:** the variables at the top of the styles — `:root` for dark, `[data-theme="light"]` for light.
-- **Film:** `KEYS` is the camera path, `PRESETS` the lighting for each theme. The numbers in `apply()` set when each building stage happens (0 = top of the page, 1 = end of the film).
+- **Film:** `FRAMES` lists the photographs in build order and `CUTS` says where on the scroll (0 = top of the page, 1 = end of the film) each one gives way to the next. `rise: true` reveals the next stage from the ground up; otherwise it dissolves. The caption timings are the `data-from` / `data-to` values on each `.cap`, and `STOPS` in the page logic sets where the stage indicator advances.
 
 ## Notes
 
-- The film is drawn live in 3D and follows the scroll position. On devices without 3D support it switches to the still frames in `assets/animations/`.
+- The film is drawn on a canvas and follows the scroll position in both directions. The first frame loads at once and the rest in the background, nearest to the scroll position first. Phones get the house in a soft-edged band over a blurred copy of the same photograph, so it is never cropped. With reduced motion switched on, the film still follows the scroll but without easing, and the other entrance animations are skipped.
 - The contact form checks the fields and then opens the visitor's email app with the message addressed to info@eseryapi.az. It does not send email by itself, so no server is needed.
 - The chosen theme and language are remembered in the visitor's browser.
