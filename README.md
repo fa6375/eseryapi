@@ -48,7 +48,7 @@ Everything is in `index.html`, in this order: styles, page markup, the film (`cr
 - **Text:** Azerbaijani is written directly in the markup. English is the `EN` list in the page logic. Each piece of text is tied to its translation by its `data-i18n` name.
 - **Projects and services:** the `PROJECTS` and `WAYS` lists in the page logic.
 - **Colours:** the variables at the top of the styles — `:root` for dark, `[data-theme="light"]` for light.
-- **Film:** `FRAMES` lists the photographs in build order and `CUTS` says where on the scroll (0 = top of the page, 1 = end of the film) each one gives way to the next. `rise: true` reveals the next stage from the ground up; otherwise it dissolves. The caption timings are the `data-from` / `data-to` values on each `.cap`, and `STOPS` in the page logic sets where the stage indicator advances.
+- **Film:** `FRAMES` lists the photographs in build order and `CUTS` says where on the scroll (0 = top of the page, 1 = end of the film) each one gives way to the next. The first six are assembled block by block in the order stored in `assets/film/build-N.png` (walls course by course, cladding board by board, scaffolding down from the top, garden outwards); `BUILD` holds the block sizes. After changing a frame, run `python3 scripts/build-order.py` to remake those orders. The last cut, day to dusk, is a dissolve. The caption timings are the `data-from` / `data-to` values on each `.cap`, and `STOPS` in the page logic sets where the stage indicator advances.
 
 ## Notes
 

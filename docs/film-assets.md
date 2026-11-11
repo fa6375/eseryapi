@@ -36,6 +36,11 @@ The house is kept to the middle of the frame on purpose: captions sit either sid
    cwebp -q 78 -m 6 -sharp_yuv -resize 1600 905  new.png -o assets/film/NN-name-1600.webp
    ```
 3. Add the name to `FRAMES` and a matching entry to `CUTS` in `index.html`.
+4. Run `python3 scripts/build-order.py` (Pillow + numpy). It compares neighbouring frames block by block and writes `assets/film/build-N.png`, the order in which the building is assembled during each cut. `--debug` writes coloured previews to `/tmp/claude-501/` (red = placed first, blue = last). Its grid settings must match `BUILD` in `index.html`.
+
+## How a stage is assembled
+
+The picture is cut into a brick-bond grid (22 × 12 px blocks on the 1600 px frame; tall 12 × 26 px boards for the cladding stage). Blocks where the building changes are put in place one at a time as you scroll, each dropping a little into position; everything else (sky, hills, trees) blends. Because it is computed from the scroll position, scrolling back takes the building apart in exactly the reverse order.
 
 ## Going further: generated video between stages
 
